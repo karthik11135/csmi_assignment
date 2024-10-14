@@ -1,0 +1,40 @@
+2. River Crossing Problem
+Problem Breakdown:
+A man, a woman, and two children need to cross a river.
+The boat can only carry up to 100 kg.
+The man and woman weigh 80 kg each, and the children weigh 30 kg each.
+The boat can be driven by anyone.
+Prolog Code:
+We can model the state of the river crossing problem with the following rules:
+
+The initial state is that all four people are on the left bank of the river.
+The goal is to get all four to the right bank.
+Moves consist of selecting one or two people to take the boat across, and then bringing the boat back with someone.
+
+% Define people's weights
+weight(man, 80).
+weight(woman, 80).
+weight(child1, 30).
+weight(child2, 30).
+
+% Define the crossing rules
+cross(State, NewState) :-
+    % Two people can cross together if their combined weight is ≤ 100 kg
+    select(X, State, S1), 
+    select(Y, S1, S2), 
+    weight(X, Wx), 
+    weight(Y, Wy), 
+    Wx + Wy =< 100,
+    append([X, Y], [], Pair),
+    subtract(State, Pair, NewState).
+
+% Define valid states
+valid_state(Left, Right) :-
+    \+ (member(man, Left), member(woman, Right)),  % Man and woman can't be separated
+    \+ (member(child1, Left), member(child2, Right)).  % Children can't be separated
+
+% Recursive state transitions
+river_crossing(Left, Right) :-
+    valid_state(Left, Right), 
+    cross(Left, Right),
+    writeln(Right).
