@@ -1,0 +1,25 @@
+1. "Brothers and sisters have I none, but that man's father is my father's son."
+Understanding the riddle:
+The person speaking has no brothers or sisters.
+"That man's father" refers to the father of some person.
+"My father's son" refers to the speaker themselves if the speaker is male, or it refers to their brother if the speaker had one, but since the speaker has no brothers, it refers to the speaker.
+So, "that man's father" is the speaker, meaning the person being referred to is the speaker's son.
+
+Prolog Code:
+prolog
+Copy code
+% Define family relationships
+parent(X, Y) :- father(X, Y).
+
+% The riddle solution
+solve_riddle(Man) :-
+    % The speaker's father is F
+    father(F, Man),  
+    % Speaker has no brothers or sisters, so the father's son is the speaker themselves
+    father(F, Speaker),
+    Man = Speaker.
+To solve the riddle, run:
+
+prolog
+Copy code
+?- solve_riddle(Who).
